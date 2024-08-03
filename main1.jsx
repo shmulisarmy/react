@@ -10,6 +10,11 @@ function Skills(Skills){
 function User(user){
     const {name, age, city, country, photo, skills} = user
     const componet_ref_key = genrefKey()
+
+    if (funcs["User"] === undefined){
+        memo("User", (dependencies) => alert(name), [name])
+    } 
+
     return html`
         <div class="user" data-key="${store_data(user)}" 
             ref_key="${componet_ref_key}">
@@ -20,7 +25,7 @@ function User(user){
             <p>${country}</p>
             /${Skills(skills)}
             <input type="text" oninput=${(e) => {user.name = e.target.value; rerender(componet_ref_key, User)}} />
-            <button onclick=${(e) => {user.name = "bob"; rerender(componet_ref_key, User)}}>alert</button>
+            <button onclick=${(e) => {user.name = "bob"; rerender(componet_ref_key, User, () => alert(user.name))}}>alert</button>
             <button onclick=${(e) => {set(componet_ref_key, User, 'name', 'bob')}}>change name to bob</button>
         </div>`
 }
@@ -35,13 +40,6 @@ function App() {
     
     `
 }
-
-
-
-
-
-
-
 
 
 

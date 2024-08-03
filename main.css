@@ -1,26 +1,29 @@
 main{
-    display: grid;
+    /* display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    grid-gap: 10px;
+    grid-gap: 10px; */
+    margin: 20%;
 }
 
 
-.task-list{
-    border: 1px solid black;
+.todo{
+    border: 1px solid #ccc;
+    border-radius: 5px;
     padding: 10px;
-}
+    background: #f8f8f8;
+    position: relative;
 
-.task{
-    border: 1px solid black;
-    padding: 10px;
-}
-
-.task:hover{
-    background-color: lightgray;
-}
-
-.user{
-    border: 1px solid black;
-    padding: 10px;
-    display: grid;
+    
+    
+    .x{
+        position: absolute;
+        padding: 4px;
+        border-radius: 4px;
+        top: 4%;
+        right: 4%;
+        background-color: red;
+    }
+    .x:active{
+        transform: scale(1.1);
+    }
 }
