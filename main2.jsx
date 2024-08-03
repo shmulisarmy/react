@@ -1,23 +1,28 @@
 
-
-
+let count = 0;
+const counter = () => {
+    return count++
+}
 
 
 function Todo(props){
     const {todo, removeTodo, editingTitle} = props
-    const {title, date, completed} = todo
+    const {title, date, completed, id} = todo
     const componet_ref_key = genrefKey()
+    const sig = createSignal(title, "hey")
 
 
     return html`
-        <div class="todo" data-key="${store_data(props)}"
+        <div class="todo" rerender-with="Todo" ${props}
+        
             ref_key="${componet_ref_key}">  
-            /${editingTitle ? html`<input value="${title}" type="text" onchange=${(e) => {todo.title = e.target.value; rerender(componet_ref_key, Todo)}}/>` : html`<h2>${title}</h2>`}
+            /${editingTitle ? html`<input value="${title}" type="text" oninput=${(e) => {todo.title = e.target.value; updateSignal(sig, counter())}}/>` : html`<h2>${title}</h2>`}
+            <p signal="${sig}">hello</p>
             <p>${date}</p>
             <input type="checkbox" ${completed? "checked" : ""} 
-            onchange=${(e) => {todo.completed = e.target.checked; rerender(componet_ref_key, Todo, () => alert(todo.completed? "this todo is completed" : "this todo is not completed"))}}/>
+            onchange=${(e) => {todo.completed = e.target.checked; rerender(componet_ref_key, () => alert(todo.completed? "this todo is completed" : "this todo is not completed"))}}/>
             <button  class="x" onclick=${(e) => {removeTodo(todo, componet_ref_key)}}>x</button>
-            <button onclick=${(e) => {props.editingTitle = !editingTitle; rerender(componet_ref_key, Todo)}}>${editingTitle? "save" : "edit"}</button>
+            <button onclick=${(e) => {props.editingTitle = !editingTitle; rerender(componet_ref_key)}}>${editingTitle? "save" : "edit"}</button>
         </div>
             `
         }
@@ -84,6 +89,8 @@ function App() {
 root.outerHTML = App()
 
 activateAllRefs(root)
-
+activateAllsignals(root)
+listen("body", document.querySelector("h1"))
+listen("body", document.querySelectorAll("h1")[1])
 
 

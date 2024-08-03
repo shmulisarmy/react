@@ -33,6 +33,9 @@ function html(strings, ...args) {
             if (typeof args[i] == "function") {
                 result += `"function_store[${store_function(args[i])}](event)"`;
                 continue;
+            } else if (typeof args[i] == "object") {
+                result += `data-key="${store_data(args[i])}"`;
+                continue;
             }
             if (strings[i][strings[i].length - 1] == "/"){
                result += args[i];
@@ -56,13 +59,17 @@ function createElementFromHTML(htmlString) {
 }
 
 
-function rerender(component_ref_key, component_maker, useEffect){
+function rerender(component_ref_key, useEffect){
     console.log(component_ref_key)
     const element = ref_store[component_ref_key]
+    const component_maker_name = element.getAttribute("rerender-with")
+    const component_maker = eval(component_maker_name);
     const primaryJsonData = data_store[element.getAttribute("data-key")];
+    console.log("primaryJsonData", primaryJsonData)
     const newElement = createElementFromHTML(component_maker(primaryJsonData));
     element.parentElement.replaceChild(newElement, element);
     activateAllRefs(newElement)
+    activateAllsignals(newElement)
     if (useEffect){
         useEffect();
     }
@@ -151,29 +158,61 @@ function getMemo(funcKey, dependencies){
 
 
 const signals = {}
+const signalFuncListeners = {}
+
 function updateSignal(key, value){
     signals[key].value = value
     for (let i = 0; i < signals[key].listeners.length; i++){
         signals[key].listeners[i].textContent = signals[key].value
     }
+    for (const listener of signalFuncListeners[key]){
+        const {element, func} = listener
+        func(element, value)
+    }
 }
 
-function createSignal(key, value){
+
+let signals_upto = 0
+
+function createSignal(value, key){
+    if (key == undefined){  
+        key = `signal-${signals_upto}`
+        signals_upto++
+    }
+    if (signals[key]) return key
     signals[key] = {
         value: value,
         listeners: []
     }
-    updateSignal(key, value)
+    signalFuncListeners[key] = []
+    return key
 }
 
 function listen(key, listener){
-    signals[key].listeners.push(listener)
-    listener.textContent = signals[key].value
+    if (!signals[key]){
+        createSignal(null, key)
+        signals[key].listeners.push(listener)
+    } else {
+        signals[key].listeners.push(listener)
+        listener.textContent = signals[key].value
+    }
 }
 
+function funcListen(key, element, func){
+    signalFuncListeners[key].push({element, func})
+}
 
-
-
+function  activateAllsignals(element){
+    if (element.hasAttribute("signal")) {
+        const signal_key = element.getAttribute("signal")
+        listen(signal_key, element)
+    }
+    const allSignalElements = element.querySelectorAll("[signal]")
+    allSignalElements.forEach(element => {
+        const signal_key = element.getAttribute("signal")
+        listen(signal_key, element)
+    })
+}
 
 
 function deepEqual(obj1, obj2, seen = new Set()) {
