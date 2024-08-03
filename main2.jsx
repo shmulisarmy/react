@@ -45,8 +45,11 @@ function Todos(){
 
 
     function removeTodo(todo, ref_key){
-        todos.splice(todos.indexOf(todo), 1)
-        rerender(componet_ref_key, Todos)
+        const todo_index = todos.indexOf(todo)
+        if (todo_index === -1) {
+            alert("sorry it seems like we can find this todo is not found in its parent list")
+            return}
+        todos.splice(todo_index, 1)
         ref_store[ref_key].remove()
     }
 
@@ -63,8 +66,15 @@ function Todos(){
     `
 }
 
+
+
+
+
 function App() {
+
     return html`
+    <h1>todos</h1>
+    <button onclick="('hello world')">click</button>
         /${Todos()}
     `
 }

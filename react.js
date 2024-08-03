@@ -148,6 +148,34 @@ function getMemo(funcKey, dependencies){
 }
 
 
+
+
+const signals = {}
+function updateSignal(key, value){
+    signals[key].value = value
+    for (let i = 0; i < signals[key].listeners.length; i++){
+        signals[key].listeners[i].textContent = signals[key].value
+    }
+}
+
+function createSignal(key, value){
+    signals[key] = {
+        value: value,
+        listeners: []
+    }
+    updateSignal(key, value)
+}
+
+function listen(key, listener){
+    signals[key].listeners.push(listener)
+    listener.textContent = signals[key].value
+}
+
+
+
+
+
+
 function deepEqual(obj1, obj2, seen = new Set()) {
     if (obj1 === obj2) {
         return true;
