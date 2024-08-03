@@ -7,7 +7,7 @@ const users = [
         city: "New York",
         country: "USA",
         photo: "https://via.placeholder.com/150",
-        skills: ["HTML", "CSS", "JavaScript", "React", "Redux", "HTML5", "CSS3", "Node.js", "Express", "MongoDB", "TypeScript", "React Router", "Webpack", "Babel", "Git", "Jest", "Cypress"],
+        skills: ["<h1>Hello</h1>", "CSS", "JavaScript", "React", "Redux", "HTML5", "CSS3", "Node.js", "Express", "MongoDB", "TypeScript", "React Router", "Webpack", "Babel", "Git", "Jest", "Cypress"],
     },
     {
         name: "Jane",

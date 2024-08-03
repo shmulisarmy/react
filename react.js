@@ -1,3 +1,9 @@
+function assert(condition, message) {
+    if (!condition) {
+        throw new Error(message);
+    }
+}
+
 const cleanHTMLMap = {
     '&': '&amp;',
     '<': '&lt;',
@@ -24,6 +30,11 @@ function html(strings, ...args) {
                 result += strings[i];
             }
         if (i < args.length) {
+            if (typeof args[i] == "function") {
+                console.log("function found: ", args[i])
+                result += `"function_store[${store_function(args[i])}](event)"`;
+                continue;
+            }
             if (strings[i][strings[i].length - 1] == "/"){
                result += args[i];
             } else {
@@ -36,31 +47,39 @@ function html(strings, ...args) {
 }
 
 function createElementFromHTML(htmlString) {
+    console.log(htmlString );
+
+    // Check if htmlString is a string
+    if (typeof htmlString !== 'string') {
+        throw new Error('Expected a string as input not a ' + typeof htmlString);
+    }
+
+    // Trim the string to remove any leading/trailing whitespace
+    var trimmedString = htmlString.trim();
+
     var tempDiv = document.createElement('div');
-    tempDiv.innerHTML = htmlString.trim();
+    tempDiv.innerHTML = trimmedString;
+
     return tempDiv.firstChild;
 }
 
-function rerender(button, component){
-    let element = button;
-    while (!element.hasAttribute("component")) {
-            element = element.parentElement;
-        }
-        const primaryJsonData = data_store[element.getAttribute("data-key")];
-        element.parentElement.replaceChild(createElementFromHTML(component(primaryJsonData)), element);
-        activateAllRefs(element)
+
+function rerender(component_ref_key, component_maker){
+    const element = ref_store[component_ref_key]
+    const primaryJsonData = data_store[element.getAttribute("data-key")];
+    const newElement = createElementFromHTML(component_maker(primaryJsonData));
+    element.parentElement.replaceChild(newElement, element);
+    activateAllRefs(newElement)
 }
 
-function set(button, component, key, value){
-    let element = button;
-    while (!element.hasAttribute("component")) {
-            element = element.parentElement;
-        }
-        const primaryJsonData = data_store[element.getAttribute("data-key")];
-        primaryJsonData[key] = value
-        const newElement = createElementFromHTML(component(primaryJsonData));
-        element.parentElement.replaceChild(newElement, element);
-        activateAllRefs(newElement)
+
+function set(component_ref_key, component_maker, key, value){
+    const element = ref_store[component_ref_key]
+    const primaryJsonData = data_store[element.getAttribute("data-key")];
+    primaryJsonData[key] = value
+    const newElement = createElementFromHTML(component_maker(primaryJsonData));
+    element.parentElement.replaceChild(newElement, element);
+    activateAllRefs(newElement)
 }
 
 const data_store = {}
@@ -104,6 +123,10 @@ function genrefKey(){
  * @param {HTMLElement} element this is the element tha will have all items with the ref attribute as child activateed
  */
 function  activateAllRefs(element){
+    if (element.hasAttribute("ref_key")) {
+        const ref_key = element.getAttribute("ref_key")
+        ref_store[ref_key] = element
+    }
     const allRefElements = element.querySelectorAll("[ref_key]")
     allRefElements.forEach(element => {
         const ref_key = element.getAttribute("ref_key")

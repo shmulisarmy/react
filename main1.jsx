@@ -9,19 +9,19 @@ function Skills(Skills){
 
 function User(user){
     const {name, age, city, country, photo, skills} = user
-    const ref_key = genrefKey()
+    const componet_ref_key = genrefKey()
     return html`
-        <div class="user" component="true" data-key="${store_data(user)}" 
-            style="padding: 10px; border: 1px solid black;"
-            onclick="ref_store[${ref_key}].textContent = 'clicked'">
+        <div class="user" data-key="${store_data(user)}" 
+            ref_key="${componet_ref_key}">
             <img src="${photo}" alt="Photo of ${name}" />
             <h2>${name}</h2>
-             <p>${age}</p>
+            <p>${age}</p>
             <p>${city}</p>
             <p>${country}</p>
             /${Skills(skills)}
-            <button ref_key="${ref_key}" onclick="function_store[${store_function(() => alert('alert'))}]()">alert</button>
-            <button onmouseover="set(this, User, 'name', 'bob')">change name to bob</button>
+            <input type="text" oninput=${(e) => {user.name = e.target.value; rerender(componet_ref_key, User)}} />
+            <button onclick=${(e) => {user.name = "bob"; rerender(componet_ref_key, User)}}>alert</button>
+            <button onclick=${(e) => {set(componet_ref_key, User, 'name', 'bob')}}>change name to bob</button>
         </div>`
 }
 
