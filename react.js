@@ -349,17 +349,15 @@ function get_element(ref_key){
 const values = {}
 const StateObjects = {}
 
-function useState(ref, initialValue){
-    if (typeof initialValue == "object") {
-        if (!StateObjects[ref]) {
-            StateObjects[ref] = initialValue
-        } else {
-            if (!(StateObjects[ref] == initialValue)) {
-                throw new Error("you can only use one object per component instance")
-            }
-        }
-    }
-    const key = `${ref}${initialValue}`
+/**
+ * 
+ * @param {string} ref 
+ * @param {*} initialValue 
+ * @param {string} keyTail this is used to help make the key unique when there are multiple similar useState calls on the same ref
+ * @returns 
+ */
+function useState(ref, initialValue, keyTail = ""){
+    const key = `${ref}${initialValue}${keyTail}`
 
     if (!(values[key])) {   
         function setValue(newValue){
@@ -371,7 +369,6 @@ function useState(ref, initialValue){
 
     return [values[key].value, values[key].setValue]
 }
-
 
 
 
