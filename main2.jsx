@@ -1,28 +1,78 @@
 
 let count = 0;
-const counter = () => {
-    return count++
+
+/**
+ * 
+ * @param {string} password 
+ * @returns {string}
+ */
+const isSwear = (input) => {
+
+    const bannedWords = [
+        "fuck",
+        "shit",
+        "cunt",
+        "bitch",
+        "asshole",
+        "ass",
+        "dick",
+        "dickhead",
+        "penis",
+        "cock",
+        "tit",
+        "tits",
+        "twat",
+        "bollocks",
+        "bugger",
+        "fucker",
+        "fucking",
+        "bastard",
+        "shite",
+    ];
+
+    for (let word of bannedWords) {
+        if (input == word) {
+            return word
+        }
+    }
+
+    return false
+
 }
+
 
 
 function Todo(props){
     const {todo, removeTodo, editingTitle} = props
     const {title, date, completed, id} = todo
     const componet_ref_key = genrefKey()
-    const sig = createSignal(title, "hey")
+    const sig = createSignal(0, id)
+    const inputref = genrefKey()
 
 
     return html`
         <div class="todo" rerender-with="Todo" ${props}
-        
             ref_key="${componet_ref_key}">  
-            /${editingTitle ? html`<input value="${title}" type="text" oninput=${(e) => {todo.title = e.target.value; updateSignal(sig, counter())}}/>` : html`<h2>${title}</h2>`}
+            <h1 style="color:red;">${editingTitle? "you are editing this todo": ""}</h1>
+            /${editingTitle ? html`<input value="${title}" ref_key='${inputref}' type="text" oninput=${(e) => {
+                let sw;
+                if (sw = isSwear(e.target.value)) {
+                    updateSignal(sig, `cannot use ${sw}`)
+                }
+                updateSignal(sig, e.target.value)
+                alert(e.target.value);
+            }}/>` : html`<h2 style="text-decoration: ${completed? "line-through" : "none"}">${title}</h2>`}
             <p signal="${sig}">hello</p>
             <p>${date}</p>
             <input type="checkbox" ${completed? "checked" : ""} 
             onchange=${(e) => {todo.completed = e.target.checked; rerender(componet_ref_key, () => alert(todo.completed? "this todo is completed" : "this todo is not completed"))}}/>
             <button  class="x" onclick=${(e) => {removeTodo(todo, componet_ref_key)}}>x</button>
-            <button onclick=${(e) => {props.editingTitle = !editingTitle; rerender(componet_ref_key)}}>${editingTitle? "save" : "edit"}</button>
+            <button onclick=${(e) => {props.editingTitle = !editingTitle; 
+                if (editingTitle) {
+                    props.todo.title = get_element(inputref).value;
+                } 
+                 rerender(componet_ref_key)}}>${editingTitle? "save" : "edit"}
+            </button>
         </div>
             `
         }

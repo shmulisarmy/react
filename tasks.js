@@ -1,0 +1,177 @@
+const taskLists = {
+
+    todo: {
+        "write code": {
+            title: "write code",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "write music": {
+            title: "write music",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "play guitar": {
+            title: "play guitar",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "clean up house": {
+            title: "clean up house",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "cook dinner": {
+            title: "cook dinner",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "take dog to park": {
+            title: "take dog to park",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "read a book": {
+            title: "read a book",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "go to gym": {
+            title: "go to gym",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "call mom": {
+            title: "call mom",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "go to doctor": {
+            title: "go to doctor",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "go to bank": {
+            title: "go to bank",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "pay bills": {
+            title: "pay bills",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "go to job": {
+            title: "go to job",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "learn javascript": {
+            title: "learn javascript",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+    },
+    doing: {
+        "clean up bathroom": {
+            title: "clean up bathroom",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "clean up kitchen": {
+            title: "clean up kitchen",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "clean up living room": {
+            title: "clean up living room",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "clean up bedroom": {
+            title: "clean up bedroom",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "clean up closet": {
+            title: "clean up closet",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+        "clean up dog": {
+            title: "clean up dog",
+            date: "2020-01-01",
+            completed: false,
+            assignee: "yossi",
+        },
+    },
+    done: {
+        "write code": {
+            title: "write code",
+            date: "2020-01-01",
+            completed: true,
+            assignee: "yossi",
+        },
+        "play guitar": {
+            title: "play guitar",
+            date: "2020-01-01",
+            completed: true,
+            assignee: "yossi",
+        },
+        "go to gym": {
+            title: "go to gym",
+            date: "2020-01-01",
+            completed: true,
+            assignee: "yossi",
+        },
+        "learn typescript": {
+            title: "learn typescript",
+            date: "2020-01-01",
+            completed: true,
+            assignee: "yossi",
+        },
+        "learn css": {
+            title: "learn css",
+            date: "2020-01-01",
+            completed: true,
+            assignee: "yossi",
+        },
+        "learn html": {
+            title: "learn html",
+            date: "2020-01-01",
+            completed: true,
+            assignee: "yossi",
+        },
+        "learn how to cook": {
+            title: "learn how to cook",
+            date: "2020-01-01",
+            completed: true,
+            assignee: "yossi",
+        },
+        "learn how to play guitar": {
+            title: "learn how to play guitar",
+            date: "2020-01-01",
+            completed: true,
+            assignee: "yossi",
+        },
+    },
+}

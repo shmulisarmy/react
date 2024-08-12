@@ -4,14 +4,124 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="stylesheet" href="main.css">
+    <script src="tasks.js"></script>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            color: #fff;
+        }
+        body {
+            background-color: #222;
+        }
+        nav{
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #555;
+            background-color: #333;
+        }
+        nav > h1 {
+            color: #fff;
+        }
+        .space {
+            height: 50px;
+        }
+        .x {
+            position: absolute;
+            padding: 4px;
+            border-radius: 4px;
+            top: 4%;
+            right: 4%;
+            background-color: #f44336;
+        }
+        .x:active {
+            transform: scale(1.1);
+        }
+        main {
+            display: flex;
+        }
+        .taskList > h1{
+            padding: 10px;
+            text-align: center;
+        }
+        .taskList {
+            margin: 10px;
+            border: 1px solid #555;
+        }
+        .tasks-container {
+            background: linear-gradient(to right, #464b87, #333);
+            max-height: 300px;
+            overflow-y: scroll;
+            border-radius: 4px;
+            margin: 10px;
+        }
+        .task {
+            border: 1px solid #555;
+            border-radius: 5px;
+            padding: 10px;
+            background: #333;
+            position: relative;
+            margin-bottom: 10px;
+        }
+        .task:hover {
+            border-color: #777;
+        }
+        .task:active {
+            background-color: #555;
+        }
+        @keyframes shrink {
+            0% {
+                transform: scale(1);
+            }
+            100% {
+                transform: scale(0);
+                background-color: #777;
+            }
+        }
+        .deleted {
+            animation: shrink 1s;
+        }
+        .x {
+            position: absolute;
+            padding: 4px;
+            border-radius: 4px;
+            top: 4%;
+            right: 4%;
+            background-color: #f44336;
+        }
+        .x:active {
+            transform: scale(1.1);
+        }
+        .space {
+            height: 50px;
+        }
+        form{
+            color: black;
+        }
+    </style>
 </head>
 <body>
-    <main id="root"></main>
+    <nav>
+        <h1>My Todo List</h1>
+        <form id="new-task-form">
+            <input type="text" id="new-task-input" placeholder="New task">
+            <button type="submit">Add</button>
+        </form>
+    </nav>
+
+    <div id="root"></div>
+    
 
 
     <script src="react.js"></script>
-    <script src="data2.js"></script>
-    <script src="main2.jsx"></script>
+    <script src="main.jsx">
+        
+
+
+
+    </script>
 </body>
 </html>

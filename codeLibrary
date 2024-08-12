@@ -32,7 +32,8 @@ function html(strings, ...args) {
         if (i < args.length) {
             if (typeof args[i] == "function") {
                 // todo: optimize this by finding index of last on and then tree searching from there
-                if (["oninput", "onchange", "onsubmit", "onclick", "onmouseover", "onmouseout", "onmousemove", "onmousedown", "onmouseup", "onkeydown", "onkeyup", "onkeypress", "ondblclick", "onload", "onunload"].some(substring => strings[i].includes(substring))){                                                              result += `function_store[${store_function(args[i])}](event)`
+                if (["oninput", "onchange", "onsubmit", "onclick", "onmouseover", "onmouseout", "onmousemove", "onmousedown", "onmouseup", "onkeydown", "onkeyup", "onkeypress", "ondblclick", "onload", "onunload"].some(substring => strings[i].includes(substring))){
+                    result += `function_store[${store_function(args[i])}](event)`
                 } else {
                     result += store_function(args[i]);
                 }
@@ -64,30 +65,20 @@ function createElementFromHTML(htmlString) {
 }
 
 
-function rerender(component_ref_key, props){
+function rerender(component_ref_key, useEffect){
     console.log(component_ref_key)
-    const element = get_element(component_ref_key)
-    console.log(element)
-    assert(element instanceof HTMLElement, "element variable is not an HTMLElement")
-    let component_maker_name
-    try {
-        component_maker_name = element.getAttribute("rerender-with")
-    } catch (error) {
-        throw new Error(`${element} does not a have a 'rerender-with' attribute (used to tell the rerender function which component to use when re-rendering)`)
-    }
+    const element = ref_store[component_ref_key]
+    const component_maker_name = element.getAttribute("rerender-with")
     const component_maker = eval(component_maker_name);
-    let primaryJsonData;
-    if (!props == undefined) {
-        primaryJsonData = data_store[element.getAttribute("data-key")];
-    } else {
-        primaryJsonData = props
-    }
+    const primaryJsonData = data_store[element.getAttribute("data-key")];
     console.log("primaryJsonData", primaryJsonData)
     const newElement = createElementFromHTML(component_maker(primaryJsonData));
     element.parentElement.replaceChild(newElement, element);
     activateAllRefs(newElement)
     activateAllsignals(newElement)
-
+    if (useEffect){
+        useEffect();
+    }
 }
 
 
@@ -138,11 +129,9 @@ function genrefKey(){
 
 /**
  * 
- * @param {HTMLElement} element this is the element tha will have all items with the ref attribute as 
-child activateed                                                                                       */
+ * @param {HTMLElement} element this is the element tha will have all items with the ref attribute as child activateed
+ */
 function  activateAllRefs(element){
-    // assert(element instanceof HTMLElement, element)
-    console.log(element)
     if (element.hasAttribute("ref_key")) {
         const ref_key = element.getAttribute("ref_key")
         ref_store[ref_key] = element
@@ -223,7 +212,7 @@ function funcListen(key, element, funcKey){
     function_store[funcKey](element, signals[key].value)
 }
 
-function activateAllsignals(element){
+function  activateAllsignals(element){
     if (element.hasAttribute("signal")) {
         const signal_key = element.getAttribute("signal")
         if (element.hasAttribute("signalFunc")){
@@ -335,44 +324,4 @@ function get_element(ref_key){
         return ref_store[ref_key]
     }
     return document.querySelector(`[ref_key="${ref_key}"]`)
-}                                                                                                   
-
-
-
-
-
-/**
- * @typedef {{[ref: string]: {value: any, setValue: Function}}} StateObjectMap
- * @type {StateObjectMap} for the key it takes in the ref and the first value 
- */
-
-const values = {}
-const StateObjects = {}
-
-function useState(ref, initialValue){
-    if (typeof initialValue == "object") {
-        if (!StateObjects[ref]) {
-            StateObjects[ref] = initialValue
-        } else {
-            if (!(StateObjects[ref] == initialValue)) {
-                throw new Error("you can only use one object per component instance")
-            }
-        }
-    }
-    const key = `${ref}${initialValue}`
-
-    if (!(values[key])) {   
-        function setValue(newValue){
-            values[key].value = newValue
-            rerender(ref)
-        }
-        values[key] = {ref, value: initialValue, setValue}
-    }
-
-    return [values[key].value, values[key].setValue]
 }
-
-
-
-
-
